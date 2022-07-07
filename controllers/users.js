@@ -9,12 +9,13 @@ const ValidationError = require('../errors/ValidationError');
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 const {
-
   incorrectData,
   mongoDuplicateKey,
   incorrectEmailOrPass,
   userNotFound,
 } = require('../utils/constants');
+
+const { secretKey } = require('../utils/config');
 
 module.exports.createUser = (req, res, next) => {
   const {
@@ -44,7 +45,7 @@ module.exports.loginUser = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+        NODE_ENV === 'production' ? JWT_SECRET : secretKey,
         { expiresIn: '7d' },
       );
       res.send({ token });

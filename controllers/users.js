@@ -9,7 +9,7 @@ const ValidationError = require('../errors/ValidationError');
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 const {
-  notFoundData,
+
   incorrectData,
   mongoDuplicateKey,
   incorrectEmailOrPass,
@@ -21,9 +21,6 @@ module.exports.createUser = (req, res, next) => {
     name, email, password,
   } = req.body;
 
-  if (!name || !email || !password) {
-    return next(new ValidationError(notFoundData));
-  }
   return bcrypt.hash(password, 10)
     .then((hash) => User.create({
       name, email, password: hash,
